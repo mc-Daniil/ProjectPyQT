@@ -1,4 +1,3 @@
-# impotrts
 import sys
 import sqlite3
 import datetime
@@ -24,7 +23,6 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.initUI()
 
-    # Special function with design of the window
     def initUI(self):
         """
         Function with design and all widgets
@@ -97,14 +95,13 @@ class MainWindow(QMainWindow):
         self.label.setSizePolicy(sizePolicy)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
+
         if self.res:
             self.label.setText(f"Сейчас вы носите {self.res[0]}\n"
                                f"Вы начали ношение {self.res[1]}\n"
                                f"Закончить ношение нужно {self.res[2]}\n")
         else:
             self.label.setText("Вы не носите линзы")
-
-
 
         self.setCentralWidget(self.centralwidget)
 
@@ -161,7 +158,7 @@ class MainWindow(QMainWindow):
         self.action_settings.setText(_translate("MainWindow", "Настройки"))
         self.action_settings.setShortcut(_translate("MainWindow", "F2"))
 
-    # This function opens a window where you can add lenses
+
     def run_add_window(self):
         """
         When button "Добавить линзы" pressed, this function opens a window to add lenses
@@ -229,19 +226,25 @@ class AddWindow(QWidget):
         """
         self.setObjectName("Form")
         self.resize(600, 600)
+
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
+
         self.gridLayout = QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
+
         self.tabWidget = QTabWidget(self)
         self.tabWidget.setObjectName("tabWidget")
+
         self.tab_add = QWidget()
         self.tab_add.setObjectName("tab_add")
+
         self.verticalLayout_2 = QVBoxLayout(self.tab_add)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
         self.label_name = QLabel(self.tab_add)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -250,6 +253,7 @@ class AddWindow(QWidget):
         self.label_name.setSizePolicy(sizePolicy)
         self.label_name.setObjectName("label_name")
         self.verticalLayout_2.addWidget(self.label_name)
+
         self.lineEdit_name = QLineEdit(self.tab_add)
         self.lineEdit_name.setObjectName("lineEdit_name")
         self.verticalLayout_2.addWidget(self.lineEdit_name)
@@ -261,9 +265,11 @@ class AddWindow(QWidget):
         self.label_week_wear.setSizePolicy(sizePolicy)
         self.label_week_wear.setObjectName("label_week_wear")
         self.verticalLayout_2.addWidget(self.label_week_wear)
+
         self.comboBox_week_wear = QComboBox(self.tab_add)
         self.comboBox_week_wear.setObjectName("comboBox_week_wear")
         self.verticalLayout_2.addWidget(self.comboBox_week_wear)
+
         self.label_day_wear = QLabel(self.tab_add)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -272,9 +278,11 @@ class AddWindow(QWidget):
         self.label_day_wear.setSizePolicy(sizePolicy)
         self.label_day_wear.setObjectName("label_day_wear")
         self.verticalLayout_2.addWidget(self.label_day_wear)
+
         self.lineEdit_day_wear = QLineEdit(self.tab_add)
         self.lineEdit_day_wear.setObjectName("lineEdit_day_wear")
         self.verticalLayout_2.addWidget(self.lineEdit_day_wear)
+
         self.pushButton_add = QPushButton(self.tab_add)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -283,16 +291,19 @@ class AddWindow(QWidget):
         self.pushButton_add.setSizePolicy(sizePolicy)
         self.pushButton_add.setObjectName("pushButton_add")
         self.verticalLayout_2.addWidget(self.pushButton_add)
+
         self.tabWidget.addTab(self.tab_add, "")
         self.tab = QWidget()
         self.tab.setObjectName("tab")
         self.gridLayout_2 = QGridLayout(self.tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
+
         self.tableWidget_2 = QTableWidget(self.tab)
         self.tableWidget_2.setObjectName("tableWidget_2")
         self.tableWidget_2.setColumnCount(0)
         self.tableWidget_2.setRowCount(0)
         self.gridLayout_2.addWidget(self.tableWidget_2, 0, 0, 1, 1)
+
         self.tabWidget.addTab(self.tab, "")
         self.tab_history = QWidget()
         self.tab_history.setObjectName("tab_history")
@@ -313,10 +324,13 @@ class AddWindow(QWidget):
         self.font = QFont()
         self.font.setPointSize(font_size)
         self.setFont(self.font)
+
         self.setWindowTitle("Добавить набор линз")
+
         self.con = sqlite3.connect("Lenses.db")
         self.cur = self.con.cursor()
         self.result = self.cur.execute("""SELECT * FROM Weared_lenses""").fetchall()
+
         if self.result:
             self.tableWidget.setRowCount(len(self.result))
             self.tableWidget.setColumnCount(len(self.result[0]))
@@ -325,6 +339,7 @@ class AddWindow(QWidget):
                     self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
 
         self.result_2 = self.cur.execute("""SELECT * FROM Lenses""").fetchall()
+
         if self.result_2:
             self.tableWidget_2.setRowCount(len(self.result_2))
             self.tableWidget_2.setColumnCount(len(self.result_2[0]))
@@ -333,6 +348,7 @@ class AddWindow(QWidget):
                     self.tableWidget_2.setItem(i, j, QTableWidgetItem(str(val)))
 
         self.res = self.cur.execute("""SELECT Text FROM Week_wear""").fetchall()
+
         if self.res:
             self.comboBox_week_wear.addItems([item[0] for item in self.res])
         self.pushButton_add.clicked.connect(self.add)
@@ -387,11 +403,14 @@ class StartWindow(QWidget):
 
         self.setObjectName("Начать ношение линз")
         self.resize(600, 600)
+
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.comboBox_choose = QComboBox(self)
         self.comboBox_choose.setObjectName("comboBox_choose")
         self.verticalLayout.addWidget(self.comboBox_choose)
+
         self.label = QLabel(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -400,6 +419,7 @@ class StartWindow(QWidget):
         self.label.setSizePolicy(sizePolicy)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
+
         self.pushButton_choose = QPushButton(self)
         self.pushButton_choose.setObjectName("pushButton_choose")
         self.verticalLayout.addWidget(self.pushButton_choose)
@@ -489,8 +509,10 @@ class EndWindow(QWidget):
 
         self.setObjectName("Закончить")
         self.resize(600, 600)
+
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.label = QLabel(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -499,6 +521,7 @@ class EndWindow(QWidget):
         self.label.setSizePolicy(sizePolicy)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
+
         self.buttonBox = QDialogButtonBox(self)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
@@ -552,24 +575,32 @@ class AboutWindow(QWidget):
 
         self.setObjectName("Form")
         self.resize(600, 600)
+
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
+
         self.gridLayout = QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
+
         self.tabWidget = QTabWidget(self)
         self.tabWidget.setEnabled(True)
+
         font = QFont()
         font.setPointSize(font_size)
+
         self.tabWidget.setFont(font)
         self.tabWidget.setCursor(QCursor(Qt.ArrowCursor))
         self.tabWidget.setObjectName("tabWidget")
+
         self.tab_app = QWidget()
         self.tab_app.setObjectName("tab_app")
+
         self.verticalLayout = QVBoxLayout(self.tab_app)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.label_about_app = QLabel(self.tab_app)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -578,11 +609,14 @@ class AboutWindow(QWidget):
         self.label_about_app.setSizePolicy(sizePolicy)
         self.label_about_app.setObjectName("label_about_app")
         self.verticalLayout.addWidget(self.label_about_app)
+
         self.tabWidget.addTab(self.tab_app, "")
+
         self.tab_opportunities = QWidget()
         self.tab_opportunities.setObjectName("tab_opportunities")
         self.verticalLayout_2 = QVBoxLayout(self.tab_opportunities)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
         self.label_choose_function = QLabel(self.tab_opportunities)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -591,6 +625,7 @@ class AboutWindow(QWidget):
         self.label_choose_function.setSizePolicy(sizePolicy)
         self.label_choose_function.setObjectName("label_choose_function")
         self.verticalLayout_2.addWidget(self.label_choose_function)
+
         self.comboBox_choose_function = QComboBox(self.tab_opportunities)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -599,6 +634,7 @@ class AboutWindow(QWidget):
         self.comboBox_choose_function.setSizePolicy(sizePolicy)
         self.comboBox_choose_function.setObjectName("comboBox_choose_function")
         self.verticalLayout_2.addWidget(self.comboBox_choose_function)
+
         self.label_about_function = QLabel(self.tab_opportunities)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -607,10 +643,12 @@ class AboutWindow(QWidget):
         self.label_about_function.setSizePolicy(sizePolicy)
         self.label_about_function.setObjectName("label_about_function")
         self.verticalLayout_2.addWidget(self.label_about_function)
+
         self.tabWidget.addTab(self.tab_opportunities, "")
         self.tab_author = QWidget()
         self.tab_author.setObjectName("tab_author")
         self.verticalLayout_3 = QVBoxLayout(self.tab_author)
+
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.label_about_author = QLabel(self.tab_author)
         self.label_about_author.setObjectName("label_about_author")
@@ -694,8 +732,10 @@ class SettingsWindow(QWidget):
 
         self.setObjectName("Настройки")
         self.resize(600, 600)
+
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.label_settings = QLabel(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -704,6 +744,7 @@ class SettingsWindow(QWidget):
         self.label_settings.setSizePolicy(sizePolicy)
         self.label_settings.setObjectName("label_settings")
         self.verticalLayout.addWidget(self.label_settings)
+
         self.label_font = QLabel(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -712,6 +753,7 @@ class SettingsWindow(QWidget):
         self.label_font.setSizePolicy(sizePolicy)
         self.label_font.setObjectName("label_font")
         self.verticalLayout.addWidget(self.label_font)
+
         self.dial_font = QDial(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
