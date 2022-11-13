@@ -397,7 +397,6 @@ class StartWindow(QWidget):
     def initUI(self):
         """
         Design and widgets
-        :return:
         """
         self.setWindowTitle("Начать ношение линз")
 
@@ -461,6 +460,7 @@ class StartWindow(QWidget):
             self.pushButton_choose.clicked.connect(self.start_wear)
         else:
             self.label.setText("Линзы не выбраны")
+
 
     def start_wear(self):
         """
@@ -541,7 +541,7 @@ class EndWindow(QWidget):
         self.cur = self.con.cursor()
         self.res = self.cur.execute("""SELECT * FROM Current_wear""").fetchone()
         self.cur.execute("""DELETE FROM Current_wear""").fetchone()
-        self.cur.execute("""INSERT INTO Weared_lenses(Name, Start_wear, End_wear) VALUES(?, ?, ?)""", (self.res[0], self.res[1], self.res[2])).fetchone()
+        self.cur.execute("""INSERT INTO Weared_lenses(Name, Start_wear, End_wear) VALUES(?, ?, ?)""", (self.res[0], self.res[1], now)).fetchone()
         self.con.commit()
         self.close()
         wnd.label.setText("Вы не носите линзы")
