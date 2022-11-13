@@ -432,7 +432,7 @@ class StartWindow(QWidget):
             self.hours = self.lense[3]
             self.day_wear = self.cur.execute("""SELECT Days FROM Week_wear WHERE id = ?""", (self.lense[2],)).fetchone()[0]
             self.end_day = now + datetime.timedelta(days=self.day_wear)
-            self.label.setText(f"Сегодня вы начинаете нашение пары линз {self.name}\n"
+            self.label.setText(f"Сегодня вы начинаете ношение пары линз {self.name}\n"
                                f"Срок замены линз - {self.day_wear} дней\n"
                                f"В день линзы можно носить не более {self.hours} часов\n"
                                f"Закончить ношение нужно будет {self.end_day}\n"
